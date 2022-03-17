@@ -1,3 +1,4 @@
+
   use num_bigint::BigUint;
   use num_traits::Zero;
   use num_traits::One;
@@ -9,12 +10,14 @@
 
     impl Primes {
       pub fn new() -> Primes {
-        Primes { primes: vec![One::one()] }
+        Primes { primes: vec![BigUint::from(1_u32),
+                              BigUint::from(2_u32),
+                              BigUint::from(3_u32)] }
       }
 
       fn generate_primes_to(&mut self, n: &BigUint) {
         let mut largest_found: BigUint = self.primes.last().unwrap().clone();
-        let mut integer_to_check: BigUint = self.primes.last().unwrap().clone() + BigUint::one();
+        let mut integer_to_check: BigUint = self.primes.last().unwrap().clone() + BigUint::from(2_u32);
         while &largest_found < n {
           let mut is_prime = true;
           for p in &self.primes {
@@ -27,7 +30,7 @@
             largest_found = integer_to_check.to_owned();
             self.primes.push(integer_to_check.to_owned());
           }
-          integer_to_check += BigUint::one();
+          integer_to_check += BigUint::from(2_u32); //Increment by 2, evens never prime
         }
       }
       fn generate_primes_to_u8(&mut self, n: u8) {

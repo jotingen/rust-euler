@@ -1,5 +1,5 @@
 [package]
-name = "rust-euler"
+name = "euler"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,3 +8,8 @@ edition = "2021"
 [dependencies]
 num-bigint = "0.4.3"
 num-traits = "0.2.14"
+criterion = "0.3"
+
+[[bench]]
+name = "primes_bench"
+harness = false
