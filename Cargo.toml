@@ -13,3 +13,4 @@ criterion = "0.3"
 [[bench]]
 name = "primes_bench"
 harness = false
+
