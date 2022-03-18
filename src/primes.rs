@@ -24,8 +24,8 @@ impl Primes {
             self.primes.last().unwrap().clone() + BigUint::from(2_u32);
         while &largest_found < n {
             let mut is_prime = true;
-            for p in &self.primes {
-                if &integer_to_check % p == Zero::zero() && p > &BigUint::one() {
+            for p in &self.primes[1..self.primes.len()] { //Skip 1
+                if &integer_to_check % p == Zero::zero() {
                     is_prime = false;
                     break;
                 }
@@ -36,21 +36,6 @@ impl Primes {
             }
             integer_to_check += BigUint::from(2_u32); //Increment by 2, evens never prime
         }
-    }
-    fn generate_primes_to_u8(&mut self, n: u8) {
-        self.generate_primes_to(&BigUint::from(n))
-    }
-    fn generate_primes_to_u16(&mut self, n: u16) {
-        self.generate_primes_to(&BigUint::from(n))
-    }
-    fn generate_primes_to_u32(&mut self, n: u32) {
-        self.generate_primes_to(&BigUint::from(n))
-    }
-    fn generate_primes_to_u64(&mut self, n: u64) {
-        self.generate_primes_to(&BigUint::from(n))
-    }
-    fn generate_primes_to_u128(&mut self, n: u128) {
-        self.generate_primes_to(&BigUint::from(n))
     }
 
     pub fn is_prime(&mut self, n: BigUint) -> bool {
