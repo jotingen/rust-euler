@@ -1,10 +1,17 @@
-
 use num_bigint::BigUint;
 use num_traits::One;
 use num_traits::Zero;
 
 pub struct Primes {
     primes: Vec<BigUint>,
+    q: BigUint,
+    r: i8,
+}
+
+impl Default for Primes {
+  fn default() -> Self {
+    Primes::new()
+  }
 }
 
 impl Primes {
@@ -15,34 +22,43 @@ impl Primes {
                 BigUint::from(2_u32),
                 BigUint::from(3_u32),
             ],
+            q: BigUint::from(1_u32),
+            r: -1,
         }
     }
 
     fn generate_primes_to(&mut self, n: &BigUint) {
         let mut largest_found: BigUint = self.primes.last().unwrap().clone();
-        let mut integer_to_check: BigUint =
-            self.primes.last().unwrap().clone() + BigUint::from(2_u32);
-        while &largest_found < n {
-            let mut is_prime = true;
-            for p in &self.primes[1..self.primes.len()] { //Skip 1
-                if &integer_to_check % p == Zero::zero() {
-                    is_prime = false;
-                    break;
+        let mut integer_to_check: BigUint;
+        'check_loop: while &largest_found < n {
+            //Generate next integer to check
+            //Basing that all primes will be of the form 6k+-1
+            if self.r > 0 {
+                self.q += BigUint::one();
+                self.r = -1;
+                integer_to_check = BigUint::from(6_u32) * &self.q - BigUint::one();
+            } else {
+                self.r = 1;
+                integer_to_check = BigUint::from(6_u32) * &self.q + BigUint::one();
+            }
+            //Check if any prime divides into number,
+            //if so skip to next number
+            for p in &self.primes[1..self.primes.len()] {
+                //Skip 1
+                if &integer_to_check % p == BigUint::zero() {
+                    continue 'check_loop;
                 }
             }
-            if is_prime {
-                largest_found = integer_to_check.to_owned();
-                self.primes.push(integer_to_check.to_owned());
-            }
-            integer_to_check += BigUint::from(2_u32); //Increment by 2, evens never prime
+            largest_found = integer_to_check.to_owned();
+            self.primes.push(integer_to_check.to_owned());
         }
     }
 
     pub fn is_prime(&mut self, n: BigUint) -> bool {
-      if &n > self.primes.last().unwrap() {
-        self.generate_primes_to(&n);
-      }
-      self.primes.contains(&n)
+        if &n > self.primes.last().unwrap() {
+            self.generate_primes_to(&n);
+        }
+        self.primes.contains(&n)
     }
     pub fn is_prime_u8(&mut self, n: u8) -> bool {
         self.is_prime(BigUint::from(n))
@@ -112,4 +128,3 @@ impl Primes {
         primes
     }
 }
-
