@@ -21,6 +21,7 @@ impl Primes {
                 BigUint::from(1_u32),
                 BigUint::from(2_u32),
                 BigUint::from(3_u32),
+                BigUint::from(5_u32),
             ],
             q: BigUint::from(1_u32),
             r: -1,
