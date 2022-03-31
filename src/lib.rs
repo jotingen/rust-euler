@@ -1,4 +1,5 @@
 pub mod primes;
+pub mod numbers;
 
 #[cfg(test)]
 
